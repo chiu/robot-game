@@ -27,9 +27,13 @@ class Robot
     @position[1] = @position[1] + 1
   end
 
+
+#test is wrong;  if at 249, can still add things
+
   def pick_up(item)
-    if self.items_weight < 250
-      if item.class.superclass == Weapon #|| item.class == Weapon
+    expected_weight = items_weight + item.weight
+    if expected_weight <= 250
+      if item.is_a? Weapon #|| item.class == Weapon
         @equipped_weapon = item
       else
         items << item 
@@ -40,18 +44,15 @@ class Robot
   end
 
   def items_weight
-    total_weight = 20
-    # items.each do |item|
-    #   total_weight += item.weight
-    # end
-    #items.inject{|total_weight, item| total_weight + item.weight}
+    
     items.inject(0) {|total_weight, item| total_weight + item.weight}
-    return total_weight
+
   end
   #test 04
   def wound(wound_amount)
     @health = @health - wound_amount 
     @health = 0 if @health < 0
+   
   end
 
   def heal(heal_amount)
