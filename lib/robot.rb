@@ -31,33 +31,32 @@ class Robot
 def pick_up(item)
   expected_weight = items_weight + item.weight
   if expected_weight <= 250
-      if item.is_a? Weapon #|| item.class == Weapon
-        @equipped_weapon = item
-      else
-        items << item 
-      end
-    else
-      return false
-    end
-  end
+   item.is_a?(Weapon) ? @equipped_weapon = item : items << item 
+ else
+  return false
+end
+end
 
-  def items_weight
-    items.inject(0){|total_weight, item| total_weight + item.weight}
-  end
+def items_weight
+  items.inject(0){|total_weight, item| total_weight + item.weight}
+end
   #test 04
   def wound(wound_amount)
     # @health = @health - wound_amount 
     # @health = 0 if @health < 0
-
     @health - wound_amount < 0 ?  @health = 0 : @health = @health - wound_amount 
   end
 
   def heal(heal_amount)
     # @health = @health + heal_amount 
     # @health = 100 if @health > 100
-
-
     heal_amount + @health > 100 ?  @health = 100 :  @health = @health + heal_amount 
+  end
+
+  def heal!(heal_amount)
+    raise RobotAlreadyDeadError.new("robo is dead foo") if @health == 0
+    heal(heal_amount)
+
   end
 
   def attack(another_robot)
@@ -67,5 +66,15 @@ def pick_up(item)
       @equipped_weapon.hit(another_robot)
     end
   end
+
+
+  def attack!(another_robot)
+    if another_robot.is_a? Robot
+    attack(another_robot) 
+  else
+    raise UnattackableEnemy.new("This robot is already dead yo."),  'Robot cannot attack a dead robo'
+  end
+
+end
   #test 04 end
 end
