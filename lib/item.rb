@@ -2,8 +2,8 @@ class Item
 
   attr_reader :weight, :name
 
-  @@NAME_DEFAULT = "john"
-  @@WEIGHT_DEFAULT = 45
+  @@NAME_DEFAULT = "default_name"
+  @@WEIGHT_DEFAULT = 9001
 
   def initialize(name = @@NAME_DEFAULT , weight = @@WEIGHT_DEFAULT)
     @name = name

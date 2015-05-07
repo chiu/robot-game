@@ -4,8 +4,8 @@ class BoxOfBolts < Item
     super('Box of bolts', 25)
   end
 
-  def feed(robot_object)
-    robot_object.heal(20)
+  def feed(robot)
+    robot.heal(20)
   end
 
 end
