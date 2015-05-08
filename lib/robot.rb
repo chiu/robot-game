@@ -1,14 +1,18 @@
 class Robot
 
-  attr_reader :position, :items, :health
+  attr_reader :position, :items, :health, :shield
   attr_accessor :equipped_weapon
+
+  SHIELD_MAX = 50
+  HEALTH_MAX = 100
 
   def initialize
     @position = [0,0]
     @items = []
-    @health = 100
+    @health = HEALTH_MAX
     @attack_power = 5
     @equipped_weapon = nil
+    @shield = SHIELD_MAX
   end
 
   def move_left
@@ -40,12 +44,23 @@ end
 def items_weight
   items.inject(0){|total_weight, item| total_weight + item.weight}
 end
+
   #test 04
   def wound(wound_amount)
-    # @health = @health - wound_amount 
-    # @health = 0 if @health < 0
-    @health - wound_amount < 0 ?  @health = 0 : @health = @health - wound_amount 
+
+    if @shield - wound_amount >= 0
+      @shield -= wound_amount
+    elsif wound_amount <= (@shield + @health)
+      @shield = 0
+      @health = HEALTH_MAX + SHIELD_MAX - wound_amount
+    else
+      @shield = 0
+      @health = 0 
+    end
+
   end
+
+
 
   def heal(heal_amount)
     # @health = @health + heal_amount 
@@ -70,11 +85,19 @@ end
 
   def attack!(another_robot)
     if another_robot.is_a? Robot
-    attack(another_robot) 
-  else
-    raise UnattackableEnemy.new("This robot is already dead yo."),  'Robot cannot attack a dead robo'
+      attack(another_robot) 
+    else
+      raise UnattackableEnemy.new("This robot is already dead yo."),  'Robot cannot attack a dead robo'
+    end
   end
 
-end
+
+  #robot zero shields
+  def set_shield_zero
+
+    @shield = 0
+  end
+
+
   #test 04 end
 end

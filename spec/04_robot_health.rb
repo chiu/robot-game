@@ -3,6 +3,8 @@ require './spec_helper'
 describe Robot do
   before :each do
     @robot = Robot.new
+    @robot.set_shield_zero
+
   end
 
   describe "#health" do
